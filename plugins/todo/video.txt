@@ -1,0 +1,1 @@
+ffmpeg -fflags +genpts -i f.asf -vcodec copy -acodec copy -map 0:3 -map 0:0 f2-f.mkv

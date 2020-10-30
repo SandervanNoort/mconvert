@@ -533,7 +533,7 @@ class Tree(object):
                         for orig_fname in orig_fnames]),
                     os.path.basename(dest_fname)),
                 params)
-        print(step, orig_fnames[0], dest_fname)
+        logger.debug("%s: %s -> %s", step, orig_fnames[0], dest_fname)
         dest_result = poptions["convert"](
             orig_fnames[0] if len(orig_fnames) == 1 else orig_fnames,
             dest_fname,
@@ -650,7 +650,6 @@ class Tree(object):
                 fname = "Dry {0}".format(step)
             else:
                 fname = self.save(step)
-                print("hier", fname)
                 if fname is None:
                     continue
                 if "inode/directory" in props["ftypes"]:

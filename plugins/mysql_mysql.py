@@ -35,13 +35,17 @@ def mysql_mysql(orig, dest, **kwargs):
 
     options = kwargs.get("tree").cmd_options.get("options", [])
     rename_tbl = None
+    extra = None
     for option in options:
         if isinstance(option, tuple) and option[0] == "rename_tbl":
             rename_tbl = option[1]
-            break
+        if isinstance(option, tuple) and option[0] == "extra":
+            extra = option[1]
 
     mysql = io.open(dest, "wb")
     for orig_fname in orig if isinstance(orig, list) else [orig]:
+        if extra:
+            mysql.write((extra + "\n").encode("utf-8"))
         with io.open(orig_fname, "rb") as fobj:
             content = fobj.read()
             if rename_tbl:

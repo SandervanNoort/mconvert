@@ -49,12 +49,13 @@ def mysql_mysql(orig, dest, **kwargs):
         with io.open(orig_fname, "rb") as fobj:
             content = fobj.read()
             if rename_tbl:
-                for tbl in re.findall(b"CREATE TABLE `(.*)`", content):
+                for tbl in re.findall(b"CREATE TABLE `(.*)`", content) + re.findall(b"CREATE TABLE IF NOT EXISTS `(.*)`", content):
                     new_tbl = rename_tbl(tbl)
                     content = re.sub(
                         b"`" + tbl + b"`",
                         b"`" + new_tbl + b"`",
                         content)
+                    mysql.write(b"DROP TABLE IF EXISTS `" + new_tbl + b"`;\n")
             mysql.write(content)
     mysql.close()
     return dest

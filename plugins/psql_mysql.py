@@ -70,7 +70,7 @@ def get_coldef(coldef):
     if cache(re.match(r"character varying\((\d+)\)", coldef)):
         return "VARCHAR({0})".format(cache.output.group(1))
     elif re.match("timestamp with time zone", coldef):
-        return "TIMESTAMP"
+        return "TEXT"
     elif re.match("unknown", coldef):
         return "TEXT"
     else:
